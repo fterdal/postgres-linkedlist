@@ -21,6 +21,8 @@ Each CandidateRanking row has a previous_id, pointing to the previous candidate 
 
 ## Example
 
+Assume there's a ballot with id 1, and here's the table of candidates:
+
 Candidates
 | id |      name     |
 |----|:-------------:|
@@ -28,3 +30,18 @@ Candidates
 |  2 |    Catra      |
 |  3 |    Bow        |
 |  4 |    Entrapta   |
+
+The user moves Catra (id 2) to the ranking. Since Catra is the first candidate on the ballot, Catra's previous_id is null:
+
+CandidateRanking
+| id | ballotId | candidateId | previousId |
+|----|:--------:|:-----------:|:----------:|
+| 1  |     1    |      2      |    null    |
+
+Now the user moves Entrapta (id 4) on to the ballot. Since Entrapta is the second candidate on the ballot, right after Catra, Entrapta's previous_id points to Catra's row in the CandidateRanking table:
+
+CandidateRanking
+| id | ballotId | candidateId | previousId |
+|----|:--------:|:-----------:|:----------:|
+| 1  |     1    |      2      |    null    |
+| 2  |     1    |      4      |     1      |
