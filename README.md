@@ -109,4 +109,43 @@ Retrieving the ranked ballot is a matter of recursive traversal:
 - [ ] Named functions in Postgres
   - Examples of named functions in Postgres https://www.postgresql.org/docs/current/sql-createfunction.html#SQL-CREATEFUNCTION-EXAMPLES
 - [ ] How to reject from a SQL procedure
-- [ ] Create a SQL trigger on create or update:
+- [ ] Create a SQL trigger on create or update
+
+```sql
+-- Playground in Postico:
+
+INSERT INTO ballots ("userName", "createdAt", "updatedAt") VALUES ('Priti', now(), now()), ('Finn', now(), now());
+
+CREATE TRIGGER makeTimestamp BEFORE INSERT ON ballots FOR EACH ROW EXECUTE PROCEDURE insertTime();
+
+
+-- DROP FUNCTION inserttime();
+
+CREATE OR REPLACE FUNCTION insertTime() RETURNS trigger AS $$
+BEGIN
+--	DROP TABLE timestamps;
+	CREATE TABLE IF NOT EXISTS timestamps(
+           id SERIAL PRIMARY KEY,
+          timestamp TIMESTAMP
+        );
+    INSERT INTO timestamps (timestamp)
+    VALUES (now());
+    RETURN NEW;
+END; $$
+LANGUAGE PLPGSQL;
+SELECT insertTime();
+
+--CREATE OR REPLACE FUNCTION hello() RETURNS date AS $$
+--BEGIN
+--	RETURN now();
+--END; $$
+--LANGUAGE PLPGSQL;
+--SELECT hello() AS time;
+
+--CREATE OR REPLACE FUNCTION inc(val integer) RETURNS integer AS $$
+--BEGIN
+--RETURN val + 1;
+--END; $$
+--LANGUAGE PLPGSQL;
+--SELECT inc(inc(20));
+```

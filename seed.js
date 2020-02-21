@@ -46,6 +46,51 @@ const sqlQueries = {
     `)
     return rows
   },
+  async declareHello() {
+    const [, { rows }] = await db.query(sql`
+      CREATE OR REPLACE FUNCTION hello() RETURNS date AS $$
+      BEGIN
+        RETURN now();
+      END; $$
+      LANGUAGE PLPGSQL;
+    `)
+    return rows
+  },
+  async hello() {
+    const [, { rows }] = await db.query(sql`
+      SELECT hello();
+    `)
+    return rows
+  },
+  async declareInsertToNewTable() {
+    const [, { rows }] = await db.query(sql`
+      CREATE OR REPLACE FUNCTION insertTime() RETURNS timestamp AS $$
+      BEGIN
+      -- DROP TABLE timestamps;
+      CREATE TABLE IF NOT EXISTS timestamps(
+            id SERIAL PRIMARY KEY,
+            timestamp TIMESTAMP
+          );
+      INSERT INTO timestamps (timestamp)
+      VALUES (now());
+      RETURN now();
+      END; $$
+      LANGUAGE PLPGSQL;
+    `)
+    return rows
+  },
+  async insertToNewTable() {
+    const [, { rows }] = await db.query(sql`
+      SELECT insertTime();
+    `)
+    return rows
+  },
+  async createTrigger() {
+    const [, { rows }] = await db.query(sql`
+
+    `)
+    return rows
+  }
 }
 
 async function seed() {
@@ -80,8 +125,12 @@ async function seed() {
     // const rows = await sqlQueries.getAllCandidateRanks()
     // console.log("RESULTS", rows)
 
-    console.log(await sqlQueries.declareIncrement())
-    console.log(await sqlQueries.increment())
+    // console.log(await sqlQueries.declareIncrement())
+    // console.log(await sqlQueries.increment())
+    // console.log(await sqlQueries.declareHello())
+    // console.log(await sqlQueries.hello())
+    console.log(await sqlQueries.declareInsertToNewTable())
+    console.log(await sqlQueries.insertToNewTable())
 
     console.log(green("🌲 Finished Seeding"))
   } catch (err) {
