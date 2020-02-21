@@ -19,9 +19,9 @@ const CandidateRank = db.define(
       {
         unique: true,
         fields: ["ballotId", "previousId"],
-        where: {
-          previousId: null
-        }
+        // where: {
+        //   previousId: null
+        // }
       }
     ]
   }

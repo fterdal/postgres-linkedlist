@@ -23,7 +23,16 @@ async function seed() {
     await hordaksBallot.addCandidate(catra)
     // This should throw an error. No two candidates can have previousId = null
     // await hordaksBallot.addCandidate(entrapta)
-    await hordaksBallot.addCandidate(entrapta, { through: { previousId: 1 } })
+
+    // This should throw an error. No two candidates can have previousId = 1
+    await hordaksBallot.addCandidate(bow, {
+      through: { previousId: 1 }
+    })
+    await hordaksBallot.addCandidate(sheRa, { through: { previousId: 2 } })
+
+    const ranks = await CandidateRank.findAll()
+
+    console.log(ranks[0].__proto__)
 
     console.log(green("🌲 Finished Seeding"))
   } catch (err) {

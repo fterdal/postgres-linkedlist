@@ -11,7 +11,8 @@ Candidate.belongsToMany(Ballot, { through: CandidateRank })
 
 CandidateRank.belongsTo(CandidateRank, {
   targetKey: "id",
-  foreignKey: "previousId"
+  foreignKey: "previousId",
+  as: "previous"
 })
 
 // Exports
