@@ -12,10 +12,6 @@ const CandidateRank = db.define(
   },
   {
     indexes: [
-      // {
-      //   unique: true,
-      //   fields: ["ballotId", "previousId"],
-      // },
       {
         unique: true,
         fields: ["ballotId", "previousId"],

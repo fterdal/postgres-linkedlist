@@ -101,5 +101,5 @@ She-Ra <-- Entrapta <-- Catra <-- Bow
 Retrieving the ranked ballot is a matter of recursive traversal:
 
 1. For the given ballotId, find the CandidateRank row with previousId of null (that's the top of the ballot).
-2. Find the CandidateRank row with previousId equal to that previousId
+2. Find the CandidateRank row with previousId equal to that
 3. Repeat 2 until there is no row with that previousId

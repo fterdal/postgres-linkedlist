@@ -8,7 +8,6 @@ const CandidateRank = require("./candidate_rank")
 // Associations
 Ballot.belongsToMany(Candidate, { through: CandidateRank })
 Candidate.belongsToMany(Ballot, { through: CandidateRank })
-
 CandidateRank.belongsTo(CandidateRank, {
   targetKey: "id",
   foreignKey: "previousId",
