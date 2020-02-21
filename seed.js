@@ -29,7 +29,23 @@ const sqlQueries = {
       SELECT * FROM candidate_ranks
     `)
     return rows
-  }
+  },
+  async declareIncrement() {
+    const [, { rows }] = await db.query(sql`
+      CREATE OR REPLACE FUNCTION inc(val integer) RETURNS integer AS $$
+      BEGIN
+        RETURN val + 1;
+      END; $$
+      LANGUAGE PLPGSQL;
+    `)
+    return rows
+  },
+  async increment() {
+    const [, { rows }] = await db.query(sql`
+      SELECT inc(inc(20));
+    `)
+    return rows
+  },
 }
 
 async function seed() {
@@ -53,7 +69,7 @@ async function seed() {
     })
     await hordaksBallot.addCandidate(sheRa, { through: { previousId: 2 } })
 
-    const ranks = await CandidateRank.findAll()
+    // const ranks = await CandidateRank.findAll()
 
     // console.log(ranks[0].__proto__)
 
@@ -61,8 +77,11 @@ async function seed() {
     // console.log("RESULTS", rows)
     // const rows = await sqlQueries.getAllCandidates()
     // console.log("RESULTS", rows)
-    const rows = await sqlQueries.getAllCandidateRanks()
-    console.log("RESULTS", rows)
+    // const rows = await sqlQueries.getAllCandidateRanks()
+    // console.log("RESULTS", rows)
+
+    console.log(await sqlQueries.declareIncrement())
+    console.log(await sqlQueries.increment())
 
     console.log(green("🌲 Finished Seeding"))
   } catch (err) {

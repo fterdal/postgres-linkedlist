@@ -103,3 +103,10 @@ Retrieving the ranked ballot is a matter of recursive traversal:
 1. For the given ballotId, find the CandidateRank row with previousId of null (that's the top of the ballot).
 2. Find the CandidateRank row with previousId equal to that
 3. Repeat 2 until there is no row with that previousId
+
+## Learn Stuff
+
+- [ ] Named functions in Postgres
+  - Examples of named functions in Postgres https://www.postgresql.org/docs/current/sql-createfunction.html#SQL-CREATEFUNCTION-EXAMPLES
+- [ ] How to reject from a SQL procedure
+- [ ] Create a SQL trigger on create or update:
