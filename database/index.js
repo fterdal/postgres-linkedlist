@@ -9,6 +9,11 @@ const CandidateRank = require("./candidate_rank")
 Ballot.belongsToMany(Candidate, { through: CandidateRank })
 Candidate.belongsToMany(Ballot, { through: CandidateRank })
 
+CandidateRank.belongsTo(CandidateRank, {
+  targetKey: "id",
+  foreignKey: "previousId"
+})
+
 // Exports
 module.exports = {
   db,
