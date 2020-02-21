@@ -22,7 +22,7 @@ const CandidateRank = db.define(
         where: {
           previousId: null
         }
-      },
+      }
     ]
   }
 )
