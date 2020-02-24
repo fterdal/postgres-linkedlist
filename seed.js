@@ -64,6 +64,7 @@ const sqlQueries = {
   },
   async declareInsertToNewTable() {
     const [, { rows }] = await db.query(sql`
+      -- DROP FUNCTION insertTime();
       CREATE OR REPLACE FUNCTION insertTime() RETURNS timestamp AS $$
       BEGIN
       -- DROP TABLE timestamps;
@@ -87,7 +88,9 @@ const sqlQueries = {
   },
   async createTrigger() {
     const [, { rows }] = await db.query(sql`
-
+      CREATE TRIGGER makeTimestamp
+        BEFORE INSERT ON ballots
+        FOR EACH ROW EXECUTE PROCEDURE insertTime();
     `)
     return rows
   }
@@ -97,6 +100,8 @@ async function seed() {
   try {
     console.log(blue("🌱 Beginning Seeding"))
     await db.sync({ force: true })
+
+    await sqlQueries.createTrigger()
 
     const hordaksBallot = await Ballot.create(seedBallot)
     const [sheRa, catra, bow, entrapta] = await Candidate.bulkCreate(
